@@ -93,16 +93,26 @@ const Dashboard: React.FC = () => {
             </thead>
 
             <tbody>
-              {transactions.map(transaction => (
-                <tr key={transaction.id}>
-                  <td className="title">{transaction.title}</td>
-                  <td className={transaction.type}>
-                    {formatValue(transaction.value)}
-                  </td>
-                  <td>{transaction.category?.title || '-'}</td>
-                  <td>{formatDate(transaction.created_at)}</td>
-                </tr>
-              ))}
+              {transactions.map(
+                ({
+                  id,
+                  title,
+                  type,
+                  value,
+                  category,
+                  created_at, // eslint-disable-line @typescript-eslint/camelcase
+                }: Transaction) => (
+                  <tr key={id}>
+                    <td className="title">{title}</td>
+                    <td className={type}>
+                      {/* eslint-disable-next-line prettier/prettier */}
+                      {`${type === 'outcome' ? '- ' : ''} ${formatValue(value)}`}
+                    </td>
+                    <td>{category?.title || '-'}</td>
+                    <td>{formatDate(created_at)}</td>
+                  </tr>
+                ),
+              )}
             </tbody>
           </table>
         </TableContainer>
