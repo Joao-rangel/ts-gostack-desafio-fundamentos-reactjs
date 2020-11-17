@@ -53,7 +53,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <>
-      <Header />
+      <Header page="list" />
       <Container>
         <CardContainer>
           <Card>
@@ -105,7 +105,7 @@ const Dashboard: React.FC = () => {
                   <tr key={id}>
                     <td className="title">{title}</td>
                     <td className={type}>
-                      {/* eslint-disable-next-line prettier/prettier */}
+                      {/* eslint-disable-next-line */}
                       {`${type === 'outcome' ? '- ' : ''} ${formatValue(value)}`}
                     </td>
                     <td>{category?.title || '-'}</td>
