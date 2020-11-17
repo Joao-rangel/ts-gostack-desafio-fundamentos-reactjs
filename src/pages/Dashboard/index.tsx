@@ -9,6 +9,7 @@ import api from '../../services/api';
 import Header from '../../components/Header';
 
 import formatValue from '../../utils/formatValue';
+import formatDate from '../../utils/formatDate';
 
 import { Container, CardContainer, Card, TableContainer } from './styles';
 
@@ -99,7 +100,7 @@ const Dashboard: React.FC = () => {
                     {formatValue(transaction.value)}
                   </td>
                   <td>{transaction.category?.title || '-'}</td>
-                  <td>{transaction.created_at}</td>
+                  <td>{formatDate(transaction.created_at)}</td>
                 </tr>
               ))}
             </tbody>
