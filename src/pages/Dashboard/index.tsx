@@ -106,7 +106,7 @@ const Dashboard: React.FC = () => {
                     <td className="title">{title}</td>
                     <td className={type}>
                       {/* eslint-disable-next-line */}
-                      {`${type === 'outcome' ? '- ' : ''} ${formatValue(value)}`}
+                        {`${type === 'outcome' ? '- ' : ''} ${formatValue(value)}`}
                     </td>
                     <td>{category?.title || '-'}</td>
                     <td>{formatDate(created_at)}</td>
