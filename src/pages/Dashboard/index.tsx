@@ -9,7 +9,6 @@ import api from '../../services/api';
 import Header from '../../components/Header';
 
 import formatValue from '../../utils/formatValue';
-import formatDate from '../../utils/formatDate';
 
 import { Container, CardContainer, Card, TableContainer } from './styles';
 
@@ -47,6 +46,7 @@ const Dashboard: React.FC = () => {
         (transaction: Transaction) => ({
           ...transaction,
           formattedValue: formatValue(transaction.value),
+          formattedDate: new Date(transaction.created_at).toLocaleDateString('pt-BR')
         })
       );
 
@@ -110,17 +110,17 @@ const Dashboard: React.FC = () => {
                   title,
                   type,
                   formattedValue,
+                  formattedDate,
                   category,
-                  created_at, // eslint-disable-line @typescript-eslint/camelcase
                 }: Transaction) => (
                     <tr key={id}>
                       <td className="title">{title}</td>
                       <td className={type}>
-                        {/* eslint-disable-next-line */}
-                        {`${type === 'outcome' ? '- ' : ''} ${formattedValue}`}
+                        {type === 'outcome' && '- '}
+                        {formattedValue}
                       </td>
                       <td>{category?.title || '-'}</td>
-                      <td>{formatDate(created_at)}</td>
+                      <td>{formattedDate}</td>
                     </tr>
                   ),
               )}
