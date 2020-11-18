@@ -41,12 +41,23 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     async function loadTransactions(): Promise<void> {
-      const response = await api.get<ApiResponse>('/transactions');
+      const { data } = await api.get<ApiResponse>('/transactions');
 
-      const apiData = response.data;
+      const formattedTransactions = data.transactions.map(
+        (transaction: Transaction) => ({
+          ...transaction,
+          formattedValue: formatValue(transaction.value),
+        })
+      );
 
-      setTransactions(apiData.transactions);
-      setBalance(apiData.balance);
+      const formattedBalance: Balance = {
+        income: formatValue(+data.balance.income),
+        outcome: formatValue(+data.balance.outcome),
+        total: formatValue(+data.balance.total)
+      }
+
+      setTransactions(formattedTransactions);
+      setBalance(formattedBalance);
     }
     loadTransactions();
   }, []);
@@ -61,7 +72,7 @@ const Dashboard: React.FC = () => {
               <p>Entradas</p>
               <img src={income} alt="Income" />
             </header>
-            <h1 data-testid="balance-income">{formatValue(+balance.income)}</h1>
+            <h1 data-testid="balance-income">{balance.income}</h1>
           </Card>
           <Card>
             <header>
@@ -69,7 +80,7 @@ const Dashboard: React.FC = () => {
               <img src={outcome} alt="Outcome" />
             </header>
             <h1 data-testid="balance-outcome">
-              {formatValue(+balance.outcome)}
+              {balance.outcome}
             </h1>
           </Card>
           <Card total>
@@ -77,7 +88,7 @@ const Dashboard: React.FC = () => {
               <p>Total</p>
               <img src={total} alt="Total" />
             </header>
-            <h1 data-testid="balance-total">{formatValue(+balance.total)}</h1>
+            <h1 data-testid="balance-total">{balance.total}</h1>
           </Card>
         </CardContainer>
 
@@ -98,20 +109,20 @@ const Dashboard: React.FC = () => {
                   id,
                   title,
                   type,
-                  value,
+                  formattedValue,
                   category,
                   created_at, // eslint-disable-line @typescript-eslint/camelcase
                 }: Transaction) => (
-                  <tr key={id}>
-                    <td className="title">{title}</td>
-                    <td className={type}>
-                      {/* eslint-disable-next-line */}
-                        {`${type === 'outcome' ? '- ' : ''} ${formatValue(value)}`}
-                    </td>
-                    <td>{category?.title || '-'}</td>
-                    <td>{formatDate(created_at)}</td>
-                  </tr>
-                ),
+                    <tr key={id}>
+                      <td className="title">{title}</td>
+                      <td className={type}>
+                        {/* eslint-disable-next-line */}
+                        {`${type === 'outcome' ? '- ' : ''} ${formattedValue}`}
+                      </td>
+                      <td>{category?.title || '-'}</td>
+                      <td>{formatDate(created_at)}</td>
+                    </tr>
+                  ),
               )}
             </tbody>
           </table>
